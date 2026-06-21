@@ -1,0 +1,10 @@
+{
+  "name": "sussex-van-and-trailer-hire",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sussex Van & Trailer Hire — website, online booking system and serverless functions.",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "stripe": "^16.12.0"
+  }
+}
