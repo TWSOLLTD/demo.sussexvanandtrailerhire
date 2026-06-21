@@ -6,7 +6,7 @@
 // and stamps reminder_sent_at so it never double-sends.
 // ============================================================
 const { createClient } = require('@supabase/supabase-js');
-const { sendBookingEmail } = require('./_email');
+const { sendBookingEmail, sendBookingSms } = require('./_email');
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
@@ -29,6 +29,7 @@ exports.handler = async () => {
   let sent = 0;
   for (const b of (due || [])) {
     await sendBookingEmail('reminder', b);
+    await sendBookingSms('reminder', b);
     await supabase.from('bookings').update({ reminder_sent_at: new Date().toISOString() }).eq('id', b.id);
     sent++;
   }
