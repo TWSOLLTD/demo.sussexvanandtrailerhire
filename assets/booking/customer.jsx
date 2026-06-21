@@ -212,7 +212,7 @@ function MyBookings(props) {
   var toast = useToast();
   var mine = Store.bookingsForUser(props.user.id).sort(function (a, b) { return b.createdAt - a.createdAt; });
   var _ed = React.useState(null), editing = _ed[0], setEditing = _ed[1];
-  function cancel(id) { Store.setBookingStatus(id, 'cancelled'); toast('Booking cancelled.', ''); props.refresh(); }
+  function cancel(id) { Store.setBookingStatus(id, 'cancelled', { cancelledBy: 'customer' }); toast('Booking cancelled.', ''); props.refresh(); }
   function pay(id) { Store.setBookingStatus(id, 'paid'); toast('Payment received — you\u2019re confirmed!', 'ok'); props.refresh(); }
   if (!mine.length) return React.createElement('div', null,
     React.createElement('div', { className: 'page-head' }, React.createElement('h1', null, 'My bookings')),

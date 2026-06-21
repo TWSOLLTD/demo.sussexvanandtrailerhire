@@ -136,19 +136,19 @@ function BookingDetailModal(props) {
   if (b.status === 'pending') {
     footer = React.createElement(React.Fragment, null,
       React.createElement('button', { className: 'b-btn b-ghost', onClick: props.onClose }, 'Close'),
-      React.createElement('button', { className: 'b-btn b-danger', onClick: function () { props.onAct(b.id, 'declined', 'Booking declined.'); } }, 'Decline'),
+      React.createElement('button', { className: 'b-btn b-danger', onClick: function () { var reason = window.prompt('Reason for declining (the customer will see this):', ''); if (reason === null) return; props.onAct(b.id, 'declined', 'Booking declined.', { adminMessage: reason }); } }, 'Decline'),
       cash
         ? React.createElement('button', { className: 'b-btn b-ok', onClick: function () { props.onAct(b.id, 'paid', 'Approved (cash) — confirmation sent ✓', { deliveryPrice: parseInt(deliveryPrice, 10) || 0 }); } }, React.createElement(Icon, { name: 'check', size: 16 }), 'Approve (cash) & confirm')
         : React.createElement('button', { className: 'b-btn b-ok', onClick: function () { props.onAct(b.id, 'approved', 'Approved — payment link sent ✓', { deliveryPrice: parseInt(deliveryPrice, 10) || 0 }); } }, React.createElement(Icon, { name: 'check', size: 16 }), 'Approve & send pay link'));
   } else if (b.status === 'approved') {
     footer = React.createElement(React.Fragment, null,
       React.createElement('button', { className: 'b-btn b-ghost', onClick: props.onClose }, 'Close'),
-      React.createElement('button', { className: 'b-btn b-danger', onClick: function () { if (window.confirm('Cancel this booking? The customer\u2019s dates will be released.')) props.onAct(b.id, 'cancelled', 'Booking cancelled.'); } }, 'Cancel booking'),
+      React.createElement('button', { className: 'b-btn b-danger', onClick: function () { if (window.confirm('Cancel this booking? The customer\u2019s dates will be released.')) { var reason = window.prompt('Reason for cancelling (optional - the customer will see it):', '') || ''; props.onAct(b.id, 'cancelled', 'Booking cancelled.', { adminMessage: reason, cancelledBy: 'admin' }); } } }, 'Cancel booking'),
       React.createElement('button', { className: 'b-btn b-ok', onClick: function () { props.onAct(b.id, 'paid', 'Payment received — confirmation sent ✓', { deliveryPrice: parseInt(deliveryPrice, 10) || 0 }); } }, React.createElement(Icon, { name: 'check', size: 16 }), 'Mark as paid & confirm'));
   } else if (b.status === 'paid') {
     footer = React.createElement(React.Fragment, null,
       React.createElement('button', { className: 'b-btn b-ghost', onClick: props.onClose }, 'Close'),
-      React.createElement('button', { className: 'b-btn b-danger', onClick: function () { if (window.confirm('Cancel this confirmed booking? The dates will be released — handle any refund separately.')) props.onAct(b.id, 'cancelled', 'Booking cancelled.'); } }, 'Cancel booking'));
+      React.createElement('button', { className: 'b-btn b-danger', onClick: function () { if (window.confirm('Cancel this confirmed booking? The dates will be released — handle any refund separately.')) { var reason = window.prompt('Reason for cancelling (optional - the customer will see it):', '') || ''; props.onAct(b.id, 'cancelled', 'Booking cancelled.', { adminMessage: reason, cancelledBy: 'admin' }); } } }, 'Cancel booking'));
   } else {
     footer = React.createElement('button', { className: 'b-btn b-ghost', onClick: props.onClose }, 'Close');
   }

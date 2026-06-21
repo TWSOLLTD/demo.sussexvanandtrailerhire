@@ -42,7 +42,7 @@
   function fromBooking(b) { return { id: b.id, listingId: b.listing_id, userId: b.user_id, startDate: b.start_date, endDate: b.end_date, period: b.period, customer: b.customer || {}, towing: b.towing, towingReg: b.towing_reg, plateWanted: b.plate_wanted, electrics: b.electrics, licence: b.licence, fulfilment: b.fulfilment, paymentMethod: b.payment_method, notes: b.notes, price: b.price, deposit: b.deposit, deliveryPrice: b.delivery_price || 0, status: b.status, createdAt: b.created_at ? new Date(b.created_at).getTime() : Date.now(), updatedAt: b.updated_at ? new Date(b.updated_at).getTime() : 0 }; }
   function toBookingRow(d, userId) { return { listing_id: d.listingId, user_id: userId, start_date: d.startDate, end_date: d.endDate, period: d.period, customer: d.customer || {}, towing: d.towing || null, towing_reg: d.towingReg || null, plate_wanted: !!d.plateWanted, electrics: d.electrics || null, licence: d.licence || null, fulfilment: d.fulfilment || 'collection', payment_method: d.paymentMethod || 'card', notes: d.notes || null, price: d.price, deposit: d.deposit }; }
   function bookingPatchToRow(patch) {
-    var map = { startDate: 'start_date', endDate: 'end_date', period: 'period', price: 'price', deposit: 'deposit', deliveryPrice: 'delivery_price' };
+    var map = { startDate: 'start_date', endDate: 'end_date', period: 'period', price: 'price', deposit: 'deposit', deliveryPrice: 'delivery_price', adminMessage: 'admin_message', cancelledBy: 'cancelled_by' };
     var row = {}; Object.keys(patch || {}).forEach(function (k) { if (map[k]) row[map[k]] = patch[k]; });
     return row;
   }

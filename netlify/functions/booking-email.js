@@ -13,7 +13,7 @@
 // Env vars (Netlify): SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY,
 //   RESEND_API_KEY, TWILIO_* (optional), WEBHOOK_SECRET (optional)
 // ============================================================
-const { sendBookingEmail, sendBookingSms, sendAdminNotification } = require('./_email');
+const { sendBookingEmail, sendBookingSms, sendAdminNotification, sendRequestReceived, sendDeclined, sendCancelledByAdmin, sendCancellationConfirmed, sendAdminCancelNotice } = require('./_email');
 
 exports.handler = async (event) => {
   console.log('[booking-email] invoked', event.httpMethod);
@@ -30,22 +30,39 @@ exports.handler = async (event) => {
   const rec = body.record || {};
   const old = body.old_record || {};
 
-  // NEW booking request -> notify the admin
+  // NEW booking request -> notify all admins + acknowledge to the customer
   if (body.type === 'INSERT') {
     console.log('[booking-email] new booking ' + rec.id + ' for ' + (rec.customer && rec.customer.email));
-    try { await sendAdminNotification(rec); } catch (e) { console.error('[booking-email] admin notify failed', e); return { statusCode: 500, body: 'admin notify failed' }; }
-    return { statusCode: 200, body: 'admin notified' };
+    try {
+      await sendAdminNotification(rec);
+      await sendRequestReceived(rec);
+    } catch (e) { console.error('[booking-email] insert handler failed', e); return { statusCode: 500, body: 'insert handler failed' }; }
+    return { statusCode: 200, body: 'admin + customer notified' };
   }
 
   if (body.type !== 'UPDATE') return { statusCode: 200, body: 'ignored' };
   if (rec.status === old.status) { console.log('[booking-email] no status change (' + rec.status + ')'); return { statusCode: 200, body: 'no status change' }; }
-  console.log('[booking-email] status ' + old.status + ' -> ' + rec.status + ', pay=' + rec.payment_method + ', email=' + (rec.customer && rec.customer.email));
+  console.log('[booking-email] status ' + old.status + ' -> ' + rec.status + ', pay=' + rec.payment_method + ', cancelledBy=' + rec.cancelled_by + ', email=' + (rec.customer && rec.customer.email));
 
-  // Which message for the new status?
+  // Declined by admin -> customer gets a reason
+  if (rec.status === 'declined') {
+    try { await sendDeclined(rec); } catch (e) { console.error('[booking-email] declined failed', e); return { statusCode: 500, body: 'declined failed' }; }
+    return { statusCode: 200, body: 'declined sent' };
+  }
+
+  // Cancelled -> different email depending on who cancelled
+  if (rec.status === 'cancelled') {
+    try {
+      if (rec.cancelled_by === 'customer') { await sendCancellationConfirmed(rec); await sendAdminCancelNotice(rec); }
+      else { await sendCancelledByAdmin(rec); }
+    } catch (e) { console.error('[booking-email] cancel failed', e); return { statusCode: 500, body: 'cancel failed' }; }
+    return { statusCode: 200, body: 'cancellation sent' };
+  }
+
+  // Approved / paid -> customer status email
   let which = null;
   if (rec.status === 'approved') which = rec.payment_method === 'cash' ? 'confirmation' : 'approval';
   else if (rec.status === 'paid' && rec.payment_method === 'card') which = 'confirmation';
-  else if (rec.status === 'declined') which = 'declined';
 
   if (!which) { console.log('[booking-email] nothing to send for ' + rec.status); return { statusCode: 200, body: 'nothing to send for ' + rec.status }; }
   console.log('[booking-email] sending "' + which + '"');
