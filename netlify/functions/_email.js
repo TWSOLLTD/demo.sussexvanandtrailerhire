@@ -159,7 +159,7 @@ async function sendAdminNotification(booking) {
       ['Fulfilment', booking.fulfilment === 'delivery' ? 'Delivery requested' : 'Collection'],
       ['Notes', booking.notes || '—']
     ])
-    + button('Review &amp; approve', SITE + '/app');
+    + button('Review & approve', SITE + '/app');
   const text = `New booking request:\n\nItem: ${map.item}\nDates: ${dates} (${map.period})\nCustomer: ${map.customer}\nPhone: ${(booking.customer && booking.customer.phone) || '—'}\nEmail: ${map.email}\nPayment: ${booking.payment_method}\nFulfilment: ${booking.fulfilment}\nNotes: ${booking.notes || '—'}\n\nLog in to the admin panel to approve or decline.`;
   return send(to, subject, brandedHtml({ heading: 'New booking request', bodyHtml }), text, 'admin');
 }
