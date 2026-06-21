@@ -3,13 +3,6 @@
   publish = "."
   functions = "netlify/functions"
 
-# These keys are PUBLIC by design (the browser needs them; Supabase Row-Level
-# Security protects the data). Tell Netlify's secret scanner they're expected,
-# so it doesn't fail the build for finding them in config.js / docs.
-[build.environment]
-  SECRETS_SCAN_OMIT_KEYS = "SUPABASE_URL,SUPABASE_ANON_KEY,EMAIL_FROM,TWILIO_FROM"
-  SECRETS_SCAN_OMIT_PATHS = "EMAILS-AND-SMS.md,SETUP.md,.env.example,Developer-Handoff.html,supabase/*"
-
 # Daily end-of-hire reminder job (08:00 UTC). Adjust cron as needed.
 [functions."send-reminders"]
   schedule = "0 8 * * *"

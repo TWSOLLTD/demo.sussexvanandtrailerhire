@@ -59,14 +59,17 @@ async function render(key, booking) {
 
 // ---------- EMAIL (Resend) ----------
 async function sendBookingEmail(key, booking) {
-  if (!process.env.RESEND_API_KEY) return;
+  if (!process.env.RESEND_API_KEY) { console.log('[email] SKIP: no RESEND_API_KEY set'); return; }
   const r = await render(key, booking);
-  if (!r.to) return;
-  await fetch('https://api.resend.com/emails', {
+  if (!r.to) { console.log('[email] SKIP: booking has no customer email', booking.id); return; }
+  const resp = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ from: EMAIL_FROM, to: r.to, subject: r.subject, text: r.body })
   });
+  const txt = await resp.text();
+  console.log(`[email] key=${key} to=${r.to} from="${EMAIL_FROM}" resend_status=${resp.status} resend_body=${txt.slice(0, 400)}`);
+  return { status: resp.status, body: txt };
 }
 
 // ---------- SMS (Twilio) ----------
@@ -100,4 +103,34 @@ async function sendBookingSms(key, booking) {
   });
 }
 
-module.exports = { sendBookingEmail, sendBookingSms, render };
+// ---------- ADMIN notification (new booking request) ----------
+async function sendAdminNotification(booking) {
+  if (!process.env.RESEND_API_KEY) { console.log('[admin] SKIP: no RESEND_API_KEY'); return; }
+  // alert EVERY admin account; fall back to NOTIFY_EMAIL if none found
+  const { data: admins } = await supabase.from('profiles').select('email').eq('role', 'admin');
+  let to = (admins || []).map((a) => a.email).filter(Boolean);
+  if (!to.length && process.env.NOTIFY_EMAIL) to = [process.env.NOTIFY_EMAIL];
+  if (!to.length) { console.log('[admin] SKIP: no admin emails found'); return; }
+  const { map } = await buildMap(booking);
+  const single = booking.start_date === booking.end_date;
+  const subject = `New booking request — ${map.item} (${map.start})`;
+  const text = `New booking request received:\n\n`
+    + `Item: ${map.item}\n`
+    + `Dates: ${map.start}${single ? '' : ' → ' + map.end} (${map.period})\n`
+    + `Customer: ${map.customer}\n`
+    + `Phone: ${(booking.customer && booking.customer.phone) || '—'}\n`
+    + `Email: ${map.email}\n`
+    + `Payment: ${booking.payment_method}\n`
+    + `Fulfilment: ${booking.fulfilment}\n`
+    + `Notes: ${booking.notes || '—'}\n\n`
+    + `Log in to the admin panel to approve or decline it.`;
+  const resp = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ from: EMAIL_FROM, to, subject, text })
+  });
+  const t = await resp.text();
+  console.log(`[admin] to=${to} resend_status=${resp.status} resend_body=${t.slice(0, 300)}`);
+}
+
+module.exports = { sendBookingEmail, sendBookingSms, sendAdminNotification, render };
