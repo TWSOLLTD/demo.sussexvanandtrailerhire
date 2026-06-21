@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Developer Handoff — Sussex Van &amp; Trailer Hire Booking System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0d2148;--ink-2:#13294f;--paper:#f3f5f8;--paper-2:#e9eef4;--muted:#5e6b7e;
+    --line:rgba(13,33,72,.14);--accent:#f2691c;--gulf:#37b3d6;--ok:#2f8a4f;
+    --head:"Barlow Condensed",sans-serif;--body:"Barlow",sans-serif;--mono:"JetBrains Mono",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--body);color:var(--ink);background:var(--paper);line-height:1.6;font-size:16px}
+  .doc{max-width:880px;margin:0 auto;padding:0 28px 100px}
+  header.cover{background:var(--ink);color:#fff;margin:0 -28px 44px;padding:54px 28px 46px;border-bottom:5px solid var(--accent)}
+  .cover .tag{font-family:var(--head);text-transform:uppercase;letter-spacing:.22em;font-size:13px;color:var(--gulf)}
+  .cover h1{font-family:var(--head);font-weight:800;text-transform:uppercase;font-size:clamp(32px,6vw,52px);line-height:.98;margin:12px 0 14px}
+  .cover p{color:#cdd7e3;max-width:60ch;font-size:17px}
+  .cover .meta{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:22px;font-size:13.5px;color:#9fb0c4;font-family:var(--head);text-transform:uppercase;letter-spacing:.08em}
+  h2{font-family:var(--head);font-weight:800;text-transform:uppercase;font-size:28px;margin:46px 0 14px;padding-bottom:10px;border-bottom:2px solid var(--line);display:flex;align-items:center;gap:12px}
+  h2 .n{background:var(--accent);color:#fff;width:34px;height:34px;border-radius:7px;display:inline-grid;place-items:center;font-size:18px;flex:none}
+  h3{font-family:var(--head);font-weight:700;text-transform:uppercase;letter-spacing:.02em;font-size:19px;margin:26px 0 8px;color:var(--ink-2)}
+  p{margin:10px 0}
+  ul,ol{margin:10px 0 10px 22px}
+  li{margin:5px 0}
+  strong{font-weight:700}
+  code{font-family:var(--mono);font-size:13.5px;background:var(--paper-2);padding:2px 6px;border-radius:4px;color:#9a3a06}
+  pre{font-family:var(--mono);font-size:13px;background:var(--ink);color:#e8eef6;padding:18px 20px;border-radius:10px;overflow:auto;margin:14px 0;line-height:1.55}
+  pre .c{color:#7e93ab}
+  pre .k{color:#69c0e0}
+  pre .s{color:#f0a868}
+  .lead{font-size:18px;color:var(--muted)}
+  .callout{border-left:4px solid var(--accent);background:#fff;padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0;box-shadow:0 1px 2px rgba(13,33,72,.05)}
+  .callout.gulf{border-color:var(--gulf)}
+  .callout.warn{border-color:#c8102e}
+  .callout b{font-family:var(--head);text-transform:uppercase;letter-spacing:.04em;font-size:14px}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 2px rgba(13,33,72,.05)}
+  th,td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--ink);color:#fff;font-family:var(--head);text-transform:uppercase;letter-spacing:.04em;font-size:12.5px}
+  td code{font-size:12.5px}
+  tr:last-child td{border-bottom:0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+  .card h4{font-family:var(--head);text-transform:uppercase;font-size:15px;margin-bottom:6px;color:var(--accent)}
+  .pill{display:inline-block;font-family:var(--head);text-transform:uppercase;letter-spacing:.05em;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--paper-2);color:var(--ink-2)}
+  .pill.green{background:#e4f4ea;color:#1c7a42}
+  .pill.orange{background:#fdecdf;color:#b5560c}
+  .filemap{font-family:var(--mono);font-size:13px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px;line-height:1.7}
+  .filemap .d{color:var(--accent)}
+  .filemap .muted{color:var(--muted)}
+  a{color:var(--accent);font-weight:600}
+  @media(max-width:640px){.grid2{grid-template-columns:1fr}}
+  @media print{
+    body{background:#fff;font-size:12pt}
+    header.cover{background:var(--ink)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    pre,th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    h2{page-break-after:avoid}pre,table,.card,.callout{page-break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+<header class="cover">
+  <div class="tag">Developer Handoff · Confidential</div>
+  <h1>Sussex Van &amp; Trailer Hire<br>Booking System</h1>
+  <p>Everything a developer needs to take the working prototype in this project and ship it as a live, production booking platform with real accounts, payments and automated emails.</p>
+  <div class="meta">
+    <span>Prepared for the build team</span>
+    <span>Stack-agnostic spec</span>
+    <span>v1.0</span>
+  </div>
+</header>
+
+<p class="lead">This project contains a <strong>fully-functional front-end prototype</strong> of the booking system. Every screen, flow and rule is built and clickable. What it does <em>not</em> have yet is a real server — all data currently lives in the browser (<code>localStorage</code>). This document explains the prototype and exactly how to make it production-grade.</p>
+
+<div class="callout">
+  <b>The fastest path</b>
+  <p style="margin-bottom:0">The prototype's data layer (<code>assets/booking/store.js</code>) is deliberately written as one clean module with a small, well-named API (<code>Store.createBooking()</code>, <code>Store.isRangeAvailable()</code>, etc.). The data shapes it uses <strong>are the database schema</strong>. Replace that one file's internals with real API calls and the entire UI works unchanged.</p>
+</div>
+
+<h2><span class="n">1</span> What's built</h2>
+<div class="grid2">
+  <div class="card">
+    <h4>Customer portal</h4>
+    <ul style="margin-bottom:0">
+      <li>Sign up / sign in</li>
+      <li>Browse trailers &amp; vans (filterable)</li>
+      <li>Listing detail with <strong>live availability calendar</strong></li>
+      <li>Half-day (AM/PM) &amp; full-day &amp; multi-day hire</li>
+      <li>Booking request with all required fields</li>
+      <li>"My bookings" with live status</li>
+      <li>Upload trip photos + reviews for approval</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Admin control panel</h4>
+    <ul style="margin-bottom:0">
+      <li>Approve / decline booking requests</li>
+      <li>Calendar of all bookings (per item or all)</li>
+      <li>Full fleet CRUD: rates, deposit, specs, photos</li>
+      <li>Per-item availability toggle &amp; blocked dates</li>
+      <li>Moderate customer photos/reviews → publish to gallery</li>
+      <li>Website gallery management</li>
+      <li><strong>Editable email templates</strong> (confirmation + reminder)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout gulf">
+  <b>Demo logins</b>
+  <p style="margin-bottom:0">Open <code>app.html</code>. Admin: <code>admin@sussexvanandtrailerhire.co.uk</code> / <code>admin123</code>. Customer: <code>demo@example.com</code> / <code>demo123</code> (both auto-fill from the "Try the demo" links).</p>
+</div>
+
+<h2><span class="n">2</span> Recommended production stack</h2>
+<p>Any of these will work — pick what the build team knows best. The prototype is framework-agnostic on the back end.</p>
+<table>
+  <tr><th>Concern</th><th>Recommended</th><th>Alternatives</th></tr>
+  <tr><td>Hosting / front end</td><td>Vercel or Netlify (static + serverless)</td><td>Cloudflare Pages, Render</td></tr>
+  <tr><td>Backend + database</td><td><strong>Supabase</strong> (Postgres + Auth + Storage + row-level security)</td><td>Firebase, a Node/Express + Postgres API, Laravel</td></tr>
+  <tr><td>Auth</td><td>Supabase Auth (email/password + magic link)</td><td>Auth0, Clerk, Firebase Auth</td></tr>
+  <tr><td>Payments</td><td><strong>Stripe</strong> (deposits + balances)</td><td>GoCardless, SumUp, Square</td></tr>
+  <tr><td>Transactional email</td><td>Resend or Postmark</td><td>SendGrid, AWS SES</td></tr>
+  <tr><td>SMS (optional)</td><td>Twilio</td><td>MessageBird, Vonage</td></tr>
+  <tr><td>Image storage</td><td>Supabase Storage / Cloudinary</td><td>AWS S3 + CloudFront</td></tr>
+  <tr><td>Scheduled jobs (reminders)</td><td>Supabase cron / Vercel Cron</td><td>GitHub Actions schedule, cron on a VPS</td></tr>
+</table>
+<div class="callout">
+  <b>Why Supabase</b>
+  <p style="margin-bottom:0">It gives you Postgres, authentication, file storage and scheduled functions in one place with very little glue code — the closest 1:1 match to what the prototype already does, so the port is fast and cheap to host.</p>
+</div>
+
+<div class="callout" style="border-color:var(--ok)">
+  <b>Chosen direction: Netlify (frontend) + Supabase (backend)</b>
+  <p>The site already deploys on <strong>Netlify</strong> from the GitHub repo — keep that. Add <strong>Supabase</strong> for the database, authentication, file storage and scheduled jobs. This is the agreed production architecture.</p>
+  <p style="margin-bottom:0"><strong>Why this split:</strong> authentication is the highest-risk thing to build by hand, and Supabase Auth handles it for you — password hashing (bcrypt), email verification, password-reset emails, session tokens (JWT) and row-level security. The browser only ever holds a short-lived token; it never sees raw passwords or other customers' data. Cloudflare Workers + D1 was the alternative but gives no built-in auth (you'd hand-roll it), so it was not chosen.</p>
+</div>
+
+<h3>Security non-negotiables</h3>
+<ul>
+  <li><strong>Passwords</strong> are stored only as salted hashes in Supabase Auth — never in the database you query, never in the frontend bundle. (The prototype's <code>localStorage</code> credentials are demo-only and must be removed.)</li>
+  <li><strong>Row-Level Security (RLS)</strong> on every table: a customer can read/write only their own bookings &amp; submissions; only <code>role = 'admin'</code> can read all bookings, manage listings, moderate reviews and edit users/roles.</li>
+  <li><strong>Admin role</strong> is a server-side flag on the user row, enforced by RLS policies — not something the client can set. (The prototype's "Make admin" button maps to an admin-only update guarded by RLS.)</li>
+  <li><strong>Secrets</strong> (Stripe keys, email/SMS API keys) live in Netlify environment variables / Supabase Edge Function secrets — never in the repo.</li>
+  <li>Serve everything over <strong>HTTPS</strong> (automatic on Netlify) and set the Supabase anon key as the only key the frontend holds (it's safe to expose; RLS does the protecting).</li>
+</ul>
+
+<h3>Rough deployment shape</h3>
+<pre><span class="c">Netlify</span>  -> static site (this repo) + optional Netlify Functions for Stripe webhooks
+<span class="c">Supabase</span> -> Postgres (tables in section 3)
+            Auth (email + password, magic links, reset emails)
+            Storage (listing & gallery & review photos)
+            Edge Functions / cron (end-of-hire reminder job)
+<span class="c">Stripe</span>   -> deposit / payment links (section 6)
+<span class="c">Resend</span>   -> transactional emails (section 7)</pre>
+
+<h2><span class="n">3</span> Database schema</h2>
+<p>Lifted directly from the prototype's data shapes. Postgres types shown; adapt as needed.</p>
+
+<h3>users</h3>
+<pre><span class="c">-- handled largely by Supabase Auth; this is the profile table</span>
+id            uuid primary key        <span class="c">-- = auth.users.id</span>
+name          text not null
+email         text unique not null
+phone         text
+role          text not null default <span class="s">'customer'</span>   <span class="c">-- 'customer' | 'admin'</span>
+created_at    timestamptz default now()</pre>
+
+<h3>listings <span class="pill">trailers &amp; vans</span></h3>
+<pre>id            uuid primary key
+category      text not null            <span class="c">-- 'trailer' | 'van'</span>
+name          text not null
+blurb         text                     <span class="c">-- one line for the card</span>
+description    text
+specs         jsonb                    <span class="c">-- { "Bed length": "4.5 m", ... }</span>
+full_day      integer not null         <span class="c">-- £ price</span>
+half_day      integer not null
+deposit       integer not null
+photos        text[]                   <span class="c">-- ordered; [0] is cover</span>
+available     boolean default true
+blocked       date[]                   <span class="c">-- maintenance / unavailable days</span>
+created_at    timestamptz default now()</pre>
+
+<h3>bookings</h3>
+<pre>id            uuid primary key
+listing_id    uuid references listings(id)
+user_id       uuid references users(id)
+start_date    date not null
+end_date      date not null
+period        text not null            <span class="c">-- 'am' | 'pm' | 'full' (single-day); 'full' for ranges</span>
+customer      jsonb                    <span class="c">-- { name, phone, email } snapshot</span>
+towing        text                     <span class="c">-- towing vehicle (trailers)</span>
+licence       text                     <span class="c">-- driving licence details</span>
+fulfilment    text                     <span class="c">-- 'collection' | 'delivery'</span>
+notes         text
+price         integer
+deposit       integer
+status        text default <span class="s">'pending'</span>   <span class="c">-- pending|confirmed|declined|cancelled</span>
+created_at    timestamptz default now()
+updated_at    timestamptz</pre>
+
+<h3>submissions <span class="pill">community photos + reviews</span></h3>
+<pre>id            uuid primary key
+user_id       uuid references users(id)
+user_name     text
+listing_id    uuid references listings(id)
+listing_name  text
+rating        integer                  <span class="c">-- 1..5</span>
+text          text
+photos        text[]
+status        text default <span class="s">'pending'</span>   <span class="c">-- pending|approved|rejected</span>
+created_at    timestamptz default now()</pre>
+
+<h3>settings <span class="pill">email templates</span></h3>
+<pre>id            int primary key default 1   <span class="c">-- single row</span>
+phone         text
+templates     jsonb   <span class="c">-- { confirmation:{subject,body}, reminder:{subject,body} }</span></pre>
+
+<h2><span class="n">4</span> The availability engine</h2>
+<p>This is the most important logic to port correctly. It already lives in <code>store.js</code> and works as follows:</p>
+<ul>
+  <li>Every booked or blocked day occupies one or two <strong>slot cells</strong>: <code>AM</code> and <code>PM</code>.</li>
+  <li>A <strong>full-day</strong> or <strong>multi-day</strong> booking occupies both slots on every day it spans.</li>
+  <li>A <strong>half-day</strong> booking occupies only its slot — so an AM booking and a PM booking can co-exist on the same item, same day.</li>
+  <li><code>blocked</code> dates (maintenance) occupy both slots.</li>
+  <li>Cancelled / declined bookings free their cells.</li>
+</ul>
+<div class="callout warn">
+  <b>Must-do on the server: prevent double-booking</b>
+  <p style="margin-bottom:0">Re-check availability inside the booking transaction (the prototype does a client check, but the source of truth must be the DB). Use a Postgres exclusion constraint or a <code>SELECT … FOR UPDATE</code> + overlap check so two simultaneous requests can't grab the same slot. See <code>isRangeAvailable()</code> and <code>occupiedCells()</code> in <code>store.js</code> for the exact rules.</p>
+</div>
+
+<h2><span class="n">5</span> API endpoints to build</h2>
+<table>
+  <tr><th>Method &amp; path</th><th>Purpose</th><th>Auth</th></tr>
+  <tr><td><code>POST /auth/signup</code></td><td>Create account</td><td>public</td></tr>
+  <tr><td><code>POST /auth/login</code></td><td>Sign in</td><td>public</td></tr>
+  <tr><td><code>GET /listings</code></td><td>List trailers &amp; vans</td><td>public</td></tr>
+  <tr><td><code>GET /listings/:id/availability?from=&amp;to=</code></td><td>Occupied slots for the calendar</td><td>public</td></tr>
+  <tr><td><code>POST /bookings</code></td><td>Create request (re-checks availability)</td><td>customer</td></tr>
+  <tr><td><code>GET /bookings/mine</code></td><td>Customer's bookings</td><td>customer</td></tr>
+  <tr><td><code>PATCH /bookings/:id</code></td><td>Cancel (customer) / set status (admin)</td><td>owner / admin</td></tr>
+  <tr><td><code>POST /submissions</code></td><td>Upload photos + review</td><td>customer</td></tr>
+  <tr><td><code>PATCH /submissions/:id</code></td><td>Approve / reject (publishes photos)</td><td>admin</td></tr>
+  <tr><td><code>GET/POST/PATCH/DELETE /listings</code></td><td>Fleet CRUD</td><td>admin</td></tr>
+  <tr><td><code>GET/POST/DELETE /gallery</code></td><td>Website gallery</td><td>admin (read public)</td></tr>
+  <tr><td><code>GET/PUT /settings/templates</code></td><td>Email templates</td><td>admin</td></tr>
+</table>
+
+<h2><span class="n">6</span> Payments (Stripe)</h2>
+<p>The client wants online card payments. Recommended flow:</p>
+<ol>
+  <li>Customer submits a booking request → status <code>pending</code>. <strong>No charge yet.</strong></li>
+  <li>Admin approves → backend creates a Stripe <code>PaymentIntent</code> (or Checkout Session) for the <strong>deposit</strong> (or deposit + hire), and the confirmation email includes the pay link.</li>
+  <li>On <code>payment_intent.succeeded</code> webhook → mark booking <code>confirmed &amp; paid</code>.</li>
+  <li>Balance &amp; the refundable deposit can be handled in person, or pre-authorise the deposit with a manual capture <code>PaymentIntent</code> and release it on safe return.</li>
+</ol>
+<div class="callout">
+  <b>Deposits</b>
+  <p style="margin-bottom:0">Stripe "manual capture" is ideal for a <em>refundable</em> deposit — you authorise the card without taking the money, then cancel the authorisation when the item comes back undamaged.</p>
+</div>
+
+<h2><span class="n">7</span> Automated emails</h2>
+<p>The admin can already edit both templates in-app (Admin → Emails). They support merge fields filled in per booking:</p>
+<p><code>{{customer}}</code> <code>{{item}}</code> <code>{{start}}</code> <code>{{end}}</code> <code>{{period}}</code> <code>{{price}}</code> <code>{{deposit}}</code> <code>{{fulfilment}}</code> <code>{{phone}}</code> <code>{{email}}</code></p>
+<table>
+  <tr><th>Email</th><th>Trigger</th><th>Implementation</th></tr>
+  <tr><td><strong>Booking confirmation</strong><br>(collection &amp; return instructions)</td><td>Admin approves a booking</td><td>Send synchronously in the <code>PATCH /bookings/:id → confirmed</code> handler via Resend/Postmark.</td></tr>
+  <tr><td><strong>End-of-hire reminder</strong><br>(return steps + "log in to add photos &amp; a review")</td><td>~1 day before <code>end_date</code></td><td>Daily scheduled job: find bookings ending tomorrow with status <code>confirmed</code>, render the <code>reminder</code> template, send. Guard against double-sends with a <code>reminder_sent_at</code> column.</td></tr>
+</table>
+<p>The exact rendering function is <code>renderTemplate(key, booking)</code> in <code>store.js</code> — reuse its merge-field logic server-side. Add SMS by sending the same rendered body via Twilio.</p>
+
+<h2><span class="n">8</span> Photo uploads &amp; moderation</h2>
+<ul>
+  <li>Prototype stores images as resized data-URLs in <code>localStorage</code>. In production, upload to <strong>object storage</strong> (Supabase Storage / S3 / Cloudinary) and store the returned URL in the <code>photos</code> array.</li>
+  <li>Keep the client-side downscale step (see <code>readImageScaled()</code> in <code>ui.jsx</code>) to cut upload sizes.</li>
+  <li>Customer submissions start <code>pending</code>; on admin approval, copy/flag the photos into the public <code>gallery</code> (the prototype's <code>setSubmissionStatus()</code> shows the exact behaviour).</li>
+  <li>Always store an EXIF-stripped, re-encoded copy for public display.</li>
+</ul>
+
+<h2><span class="n">9</span> Project file map</h2>
+<div class="filemap">
+<span class="d">index.html</span>            <span class="muted">— public marketing site (SEO-optimised)</span><br>
+<span class="d">app.html</span>              <span class="muted">— the booking app (customer + admin SPA)</span><br>
+<span class="d">Developer-Handoff.html</span> <span class="muted">— this document</span><br>
+robots.txt · sitemap.xml  <span class="muted">— SEO</span><br>
+<span class="d">assets/</span><br>
+&nbsp;&nbsp;styles.css            <span class="muted">— marketing site styles (brand tokens)</span><br>
+&nbsp;&nbsp;app.js                <span class="muted">— marketing site behaviour + gallery</span><br>
+&nbsp;&nbsp;<span class="d">gallery/</span>             <span class="muted">— photos (p01–p61, hero-lambo)</span><br>
+&nbsp;&nbsp;<span class="d">booking/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="d">store.js</span>          <span class="muted">★ DATA LAYER — replace internals with API calls</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;booking.css       <span class="muted">— booking app styles</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;ui.jsx            <span class="muted">— shared components (calendar, modal, fields…)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;auth.jsx          <span class="muted">— sign in / sign up</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;customer.jsx      <span class="muted">— browse, booking, my bookings, share trip</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;admin.jsx         <span class="muted">— inbox, calendar, fleet, reviews, gallery, emails</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;app.jsx           <span class="muted">— routing + top bar</span>
+</div>
+<div class="callout gulf">
+  <b>Note on the prototype's React</b>
+  <p style="margin-bottom:0">The prototype uses in-browser Babel for zero-build convenience. For production, move the JSX into a proper Vite/Next build (precompiled) — the component code ports over directly. This isn't required for the prototype to run, only for a fast, cached production bundle.</p>
+</div>
+
+<h2><span class="n">10</span> Before launch — confirm with the client</h2>
+<ul>
+  <li><strong>Real day rates &amp; deposits</strong> for every trailer and van (the prototype uses sensible <em>placeholders</em>).</li>
+  <li><strong>Van hire policy</strong>: minimum driver age, licence requirements, mileage limits, fuel policy.</li>
+  <li><strong>Opening hours</strong> — currently shown as 7 days, 07:00–20:00 "by arrangement" in the schema; set the real hours.</li>
+  <li><strong>Insurance &amp; T&amp;Cs</strong> page — required before taking real bookings/payments.</li>
+  <li><strong>Google review data</strong> — the marketing page's structured data has a placeholder rating/count. Replace with the real figures or remove the <code>aggregateRating</code> block (Google penalises invented review markup).</li>
+  <li><strong>Domain</strong> — the SEO tags assume <code>www.sussexvanandtrailerhire.co.uk</code>; update if different.</li>
+  <li><strong>GDPR</strong> — privacy policy + cookie/consent for storing customer details and licence info.</li>
+</ul>
+
+<h2><span class="n">11</span> SEO already in place</h2>
+<ul>
+  <li>Descriptive <code>&lt;title&gt;</code>, meta description &amp; keywords, canonical URL.</li>
+  <li>Open Graph + Twitter cards for nice link previews.</li>
+  <li><strong>JSON-LD structured data</strong> (<code>AutoRental</code> LocalBusiness) — name, phone, area served, services, hours, price range — for rich Google results.</li>
+  <li>Geo meta tags for local search; <code>robots.txt</code> + <code>sitemap.xml</code>.</li>
+  <li>Semantic headings, descriptive image <code>alt</code> text, mobile-responsive, fast static assets.</li>
+</ul>
+<div class="callout">
+  <b>Next SEO wins</b>
+  <p style="margin-bottom:0">Claim/verify Google Business Profile, submit the sitemap in Google Search Console, gather Google reviews, and consider individual landing pages per service + per nearby town (Worthing, Bognor, Arundel…) for local keyword reach.</p>
+</div>
+
+<p style="margin-top:50px;padding-top:20px;border-top:2px solid var(--line);color:var(--muted);font-size:14px">Sussex Van &amp; Trailer Hire — booking system handoff. The prototype in this project is the living specification; when in doubt, run it and read <code>store.js</code>.</p>
+
+</div>
+</body>
+</html>

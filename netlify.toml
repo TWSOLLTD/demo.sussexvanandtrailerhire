@@ -1,0 +1,12 @@
+# Build & ledger config
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# Daily end-of-hire reminder job (08:00 UTC). Adjust cron as needed.
+[functions."send-reminders"]
+  schedule = "0 8 * * *"
+
+# Stripe needs the raw request body to verify the webhook signature.
+[functions."stripe-webhook"]
+  # no bundling transforms that alter the body
